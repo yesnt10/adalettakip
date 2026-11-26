@@ -1,0 +1,65 @@
+name: Telegram ve harita
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '2-57/5 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: telegram-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Telegram'ı kontrol et
+        if: github.event_name != 'push'
+        run: npm run sync
+      - name: Harita verisi değişti mi?
+        id: publish
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT_NAME" = push ] || [ "$EVENT_NAME" = workflow_dispatch ] || ! git diff --quiet -- dist/kayitlar.json; then
+            echo 'deploy=true' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/configure-pages@v6.0.0
+        if: steps.publish.outputs.deploy == 'true'
+      - uses: actions/upload-pages-artifact@v5.0.0
+        if: steps.publish.outputs.deploy == 'true'
+        with:
+          path: dist
+      - uses: actions/deploy-pages@v5.0.1
+        id: deployment
+        if: steps.publish.outputs.deploy == 'true'
+      - name: Sonuçları ve kontrol noktasını kaydet
+        run: |
+          git add -- dist/kayitlar.json telegram/cursor.txt
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Telegram sonuçlarını güncelle'
+          git push origin HEAD:main

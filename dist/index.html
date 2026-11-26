@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="İl bazında adliye sonuç ve kontenjan haritası">
+<title>Adalet Alım Haritası</title>
+<link rel="stylesheet" href="style.css"><script src="app.js" defer></script>
+</head>
+<body>
+<main>
+<div class="map-stage">
+<svg id="map" viewBox="0 0 1050 455" role="group" aria-label="Türkiye illeri. Kayıt bulunan illeri seçebilirsin."></svg>
+<p id="error" role="alert" hidden></p>
+</div>
+<ul class="map-legend" aria-label="Harita renkleri">
+  <li><span class="swatch center" aria-hidden="true"></span>İl merkezi açıklandı</li>
+  <li><span class="swatch district" aria-hidden="true"></span>Yalnızca ilçe açıklandı</li>
+  <li><span class="swatch" aria-hidden="true"></span>Açıklanan sonuç kaydı yok</li>
+</ul>
+<div id="province-label" class="province-label" aria-hidden="true" hidden></div>
+<section class="national-overview" aria-labelledby="national-title">
+  <header class="national-header">
+    <h2 id="national-title">Türkiye geneli</h2>
+    <p>Paylaşılan durum özeti · İlerleme komisyon sayısına göre</p>
+  </header>
+  <div id="national-records" aria-live="polite"><p class="national-status">Yükleniyor…</p></div>
+</section>
+</main>
+<a class="credit" href="https://www.geoboundaries.org/api/current/gbOpen/TUR/ADM1/">geoBoundaries · OpenStreetMap</a>
+<dialog id="province-dialog" aria-labelledby="city">
+  <div class="dialog-head">
+    <div><h1 id="city"></h1><p id="city-summary"></p></div>
+    <form method="dialog"><button class="close" type="submit" aria-label="Kapat" autofocus>×</button></form>
+  </div>
+  <div id="records"></div>
+</dialog>
+
+</body></html>

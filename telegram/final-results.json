@@ -1,0 +1,10 @@
+{
+  "firstDate": "2026-11-09",
+  "reject": "\\b(?:uygulamali|uygulama|klavye|basvuru|boy[\\s-]*kilo|kura)\\b|\\b(?:girmeye|katilmaya)\\s+hak\\b|\\bkatilacak(?:lar|\\s+adaylar)\\b|\\b(?:sozlu\\s+sinava|mulakata)\\s+(?:cagrilan|davet|katilacak)\\b",
+  "accept": "\\bnihai\\s+(?:basari|sonuc\\w*|sinav)\\b|\\bsozlu\\s+sinav\\w*\\b.{0,110}\\bsonuc\\w*\\b|\\bmulakat\\w*\\b.{0,70}\\bsonuc\\w*\\b|\\balim[i]?\\s+sonuc\\w*\\b",
+  "contextPost": 3713,
+  "contextLinks": [
+    "istanbul.adalet.gov.tr/sozlesmeli-zabit-katipligi-genel-mezuniyet-sozlu-sinavina-iliskin-duyuru",
+    "istanbul.adalet.gov.tr/sozlesmeli-zabit-katipligi-oncelikli-mezuniyet-sozlu-sinavina-iliskin-duyuru"
+  ]
+}

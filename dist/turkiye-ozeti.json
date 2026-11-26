@@ -1,0 +1,84 @@
+[
+  {
+    "kurum": "Personel Genel Müdürlüğü",
+    "kisaltma": "PGM",
+    "kadrolar": [
+      {
+        "ad": "Zabıt kâtipliği",
+        "yuzde": 22,
+        "aciklananKomisyon": 37,
+        "toplamKomisyon": 170,
+        "kisi": 892,
+        "toplamKisi": 5259
+      },
+      {
+        "ad": "Mübaşir",
+        "yuzde": 14,
+        "aciklananKomisyon": 21,
+        "toplamKomisyon": 147,
+        "kisi": 137,
+        "toplamKisi": 1041
+      },
+      {
+        "ad": "Koruma ve güvenlik görevlisi",
+        "yuzde": 7,
+        "aciklananKomisyon": 3,
+        "toplamKomisyon": 43,
+        "kisi": 173,
+        "toplamKisi": 479
+      },
+      {
+        "ad": "Destek personeli (hizmetli)",
+        "yuzde": 23,
+        "aciklananKomisyon": 33,
+        "toplamKomisyon": 143,
+        "kisi": 122,
+        "toplamKisi": 485
+      }
+    ]
+  },
+  {
+    "kurum": "İcra İşleri Dairesi Başkanlığı",
+    "kisaltma": "İİDB",
+    "kadrolar": [
+      {
+        "ad": "İcra kâtipliği",
+        "yuzde": 0,
+        "aciklananKomisyon": 0,
+        "toplamKomisyon": 65,
+        "kisi": 0,
+        "toplamKisi": 900
+      }
+    ]
+  },
+  {
+    "kurum": "Ceza ve Tevkifevleri Genel Müdürlüğü",
+    "kisaltma": "CTE",
+    "kadrolar": [
+      {
+        "ad": "İnfaz ve koruma memuru",
+        "yuzde": 44,
+        "aciklananKomisyon": 33,
+        "toplamKomisyon": 75,
+        "kisi": 718,
+        "toplamKisi": 4508
+      },
+      {
+        "ad": "Cezaevi kâtipliği",
+        "yuzde": 49,
+        "aciklananKomisyon": 37,
+        "toplamKomisyon": 76,
+        "kisi": 79,
+        "toplamKisi": 316
+      },
+      {
+        "ad": "Hemşire",
+        "yuzde": 47,
+        "aciklananKomisyon": 34,
+        "toplamKomisyon": 73,
+        "kisi": 75,
+        "toplamKisi": 286
+      }
+    ]
+  }
+]
