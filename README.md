@@ -4,7 +4,7 @@ Türkiye'nin 81 ilinde adliye duyurularını ve duyurularda belirtilen kontenjan
 
 GitHub Actions herkese açık [Telegram kanalını](https://t.me/s/adaletbakanligilanlari) beş dakikada bir kontrol eder. Kanalda paylaşılan resmî adliye duyuruları aşamaya ve kadroya göre elenmeden aktarılır. İl eşleşmesi bulunamayan kurum duyuruları haritanın altındaki bölümde listelenir. Resmî ilan bağlantısı kullanıcıya gösterilir. Otomatik kontrol adliye sayfalarına bağlanmaz.
 
-Yeni geçerli kayıtlar `dist/kayitlar.json` dosyasına eklenir. Harita içeriği değiştiğinde otomatik yayınlanır. Zamanlama yoğunlukta gecikebilir. GitHub, 60 gün etkinlik görmeyen açık depolarda zamanlamayı durdurabilir. Gerektiğinde Actions sekmesinde **Telegram ve harita** akışını yeniden etkinleştirin.
+Yeni geçerli kayıtlar `dist/kayitlar.json` dosyasına eklenir. Türkiye geneli tablosu bu kayıtlardan güncel komisyon ve bilinen kontenjan sayılarını hesaplar. Ülke geneli hedefleri `dist/turkiye-ozeti.json` içinde tutulur. Harita içeriği değiştiğinde otomatik yayınlanır. Zamanlama yoğunlukta gecikebilir. GitHub, 60 gün etkinlik görmeyen açık depolarda zamanlamayı durdurabilir. Gerektiğinde Actions sekmesinde **Telegram ve harita** akışını yeniden etkinleştirin.
 
 Elle kontrol için GitHub Actions ekranında **Run workflow** seçeneğini ya da GitHub CLI ile oturum açtıktan sonra Windows'ta **Telegram Kontrol.cmd** dosyasını kullanın.
 

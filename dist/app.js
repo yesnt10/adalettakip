@@ -1,4 +1,4 @@
-"use strict";
+import {buildNationalSummary} from "./national-summary.js?v=1";
 
 const byId = id => document.getElementById(id);
 const map = byId("map");
@@ -11,6 +11,7 @@ const recordsByCity = new Map();
 let activeCity;
 let restoreKeyboardFocus = false;
 let lastPayload;
+let nationalTotals;
 
 
 function element(tag, content, className) {
@@ -159,7 +160,7 @@ function nationalGroup({kurum, kisaltma, kadrolar}) {
     const counts = element("div", undefined, "national-counts");
     counts.append(
       element("span", fmt.format(row.aciklananKomisyon) + " / " + fmt.format(row.toplamKomisyon) + " komisyon"),
-      element("span", fmt.format(row.kisi) + " / " + fmt.format(row.toplamKisi) + " kişi")
+      element("span", (row.kisi == null ? "—" : fmt.format(row.kisi)) + " / " + fmt.format(row.toplamKisi) + " bilinen kontenjan")
     );
     card.append(heading, progress, counts);
     group.append(card);
@@ -167,20 +168,24 @@ function nationalGroup({kurum, kisaltma, kadrolar}) {
   return group;
 }
 
-async function loadNationalSummary() {
+async function loadNationalSummary(records) {
   const content = byId("national-records");
   try {
-    const groups = await readJson("turkiye-ozeti.json");
+    nationalTotals ??= await readJson("turkiye-ozeti.json");
+    const groups = buildNationalSummary(nationalTotals, records);
+    byId("national-subtitle").textContent = fmt.format(records.length) +
+      " kayıt · Komisyon ilerlemesi sonuç duyurularına göre";
     const priority = group => Math.min(...group.kadrolar.map(row => jobPriority(row.ad)));
     content.replaceChildren(...groups.toSorted((a, b) => priority(a) - priority(b)).map(nationalGroup));
   } catch {
+    nationalTotals = null;
     content.replaceChildren(element("p", "Türkiye geneli özeti yüklenemedi.", "national-status"));
   }
 }
 
 function updateRecords(records) {
   const payload = JSON.stringify(records);
-  if (payload === lastPayload) return;
+  if (payload === lastPayload) return false;
   lastPayload = payload;
   recordsByCity.clear();
   for (const record of records) {
@@ -208,12 +213,14 @@ function updateRecords(records) {
   byId("general-notice-list").replaceChildren(...general
     .toSorted((a, b) => (b.tarih ?? "").localeCompare(a.tarih ?? "")).map(recordCard));
   if (activeCity) updateDialog(activeCity);
+  return true;
 }
 
 async function refreshRecords() {
   try {
     const records = await readJson("kayitlar.json");
-    updateRecords(records);
+    const changed = updateRecords(records);
+    if (changed || !nationalTotals) await loadNationalSummary(records);
     byId("error").hidden = true;
   } catch {
     byId("error").textContent = "Duyurular yenilenemedi. Otomatik olarak tekrar denenecek.";
@@ -248,7 +255,6 @@ dialog.addEventListener("click", event => {
   }
 });
 
-loadNationalSummary();
 start().catch(error => {
   console.error(error);
   byId("error").textContent = "Harita verisi yüklenemedi. Sayfayı yenileyip tekrar dene.";
