@@ -1,4 +1,4 @@
-name: Manuel nihai sonuç ekle
+name: Manuel duyuru ekle
 
 on:
   workflow_dispatch:

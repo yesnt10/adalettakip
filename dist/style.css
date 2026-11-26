@@ -65,3 +65,5 @@ a{color:#176e59}
 .swatch{width:12px;height:12px;border-radius:3px;background:#dae3e6}
 .swatch.center{background:#86bfae}
 .swatch.district{background:#ead3a2}
+#general-notices summary{cursor:pointer;font-weight:650}
+#general-notice-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px;margin-top:12px}

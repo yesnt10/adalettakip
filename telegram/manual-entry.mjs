@@ -1,5 +1,5 @@
 import {readFile} from "node:fs/promises";
-import {cleanTitle, isFinalResult, positions, provinces, slug, sourceLink, fold} from "./parse.mjs";
+import {cleanTitle, positions, provinces, slug, sourceLink, fold} from "./parse.mjs";
 import {mergeRecords, writeAtomic} from "./sync.mjs";
 
 function text(value, name, limit, required = true) {
@@ -27,10 +27,9 @@ export function manualRecord(input) {
   const link = text(input.kaynak, "Resmî ilan bağlantısı", 2048, false);
   const kaynak = link ? sourceLink(link) : null;
   if (link && !kaynak) throw new Error("Doğrudan resmî adalet.gov.tr ilan bağlantısını gir.");
-  const baslik = text(input.baslik, "İlan başlığı", 450, false) || kadro + " nihai sonuç duyurusu";
+  const baslik = text(input.baslik, "İlan başlığı", 450, false) || kadro + " duyurusu";
   const row = {il, adliye, kadro, kontenjan: quota ? Number(quota) : null, tarih,
     durum: "aciklandi", baslik, kaynak, manuel: true};
-  if (!isFinalResult(row)) throw new Error("Bu başlık veya tarih nihai sonuç dönemiyle uyuşmuyor.");
   return row;
 }
 
@@ -40,7 +39,7 @@ async function main() {
   const current = JSON.parse(await readFile(path, "utf8"));
   const updated = mergeRecords(current, [row]);
   if (JSON.stringify(updated) === JSON.stringify(current)) {
-    console.log("Bu sonuç haritada aynı bilgilerle zaten yer alıyor.");
+    console.log("Bu duyuru haritada aynı bilgilerle zaten yer alıyor.");
     return;
   }
   await writeAtomic(path, JSON.stringify(updated, null, 2) + "\n");

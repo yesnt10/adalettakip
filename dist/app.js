@@ -31,10 +31,6 @@ function jobPriority(job) {
   return 2;
 }
 
-function hasResult(record) {
-  return record.durum === "aciklandi" || record.durum === "sonuc_duyurusu";
-}
-
 function isProvinceCenter(record) {
   const place = fold(record.adliye).trim()
     .replace(/\s+(?:adliyesi|bam|bim)$/, "")
@@ -43,16 +39,13 @@ function isProvinceCenter(record) {
 }
 
 function provinceColor(records) {
-  const results = records.filter(hasResult);
-  if (results.some(isProvinceCenter)) return "center";
-  return results.length ? "district" : "";
+  if (records.some(isProvinceCenter)) return "center";
+  return records.length ? "district" : "";
 }
 
 function recordCard(record) {
   const card = element("article", undefined, "record");
-  const published = hasResult(record);
   card.append(
-    element("span", published ? "Nihai sonuç açıklandı" : "Sonuç bekleniyor", published ? "tag" : "tag pending"),
     element("h2", record.adliye), element("p", record.kadro, "job")
   );
   if (record.baslik) card.append(element("p", record.baslik, "announcement-title"));
@@ -97,7 +90,7 @@ function updateDialog(name) {
   const records = recordsByCity.get(name) ?? [];
   byId("city").textContent = name;
   byId("city-summary").textContent = fmt.format(records.length) + " kayıt";
-  byId("records").replaceChildren(...records.toSorted((a, b) => jobPriority(a.kadro) - jobPriority(b.kadro)).map(recordCard));
+  byId("records").replaceChildren(...records.toSorted((a, b) => jobPriority(a.kadro) - jobPriority(b.kadro) || (b.tarih ?? "").localeCompare(a.tarih ?? "")).map(recordCard));
 }
 
 function drawMap(features) {
@@ -205,6 +198,11 @@ function updateRecords(records) {
       for (const attr of ["role", "tabindex", "aria-label", "aria-expanded", "aria-haspopup"]) path.removeAttribute(attr);
     }
   }
+  const general = recordsByCity.get(null) ?? [];
+  byId("general-notices").hidden = !general.length;
+  byId("general-notice-count").textContent = fmt.format(general.length);
+  byId("general-notice-list").replaceChildren(...general
+    .toSorted((a, b) => (b.tarih ?? "").localeCompare(a.tarih ?? "")).map(recordCard));
   if (activeCity) updateDialog(activeCity);
 }
 

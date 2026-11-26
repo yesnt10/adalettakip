@@ -8,7 +8,6 @@ const channel = "adaletbakanligilanlari";
 const geometry = await readJson("../dist/turkiye.json");
 const regions = geometry.features.map(feature => feature.properties.shapeName);
 const districtsCatalog = await readJson("./districts.json");
-const finalRules = await readJson("./final-results.json");
 
 function fold(text) {
   return text.toLocaleLowerCase("tr").replaceAll("ı", "i").normalize("NFKD").replace(/\p{M}/gu, "");
@@ -29,30 +28,18 @@ const courtAliases = new Map(Object.entries({
   gebze: "Kocaeli", bolvadin: "Afyonkarahisar", afyon: "Afyonkarahisar",
   maras: "Kahramanmaraş",
 }));
-const campaignStart = finalRules.firstDate;
-const earlierStage = new RegExp(finalRules.reject);
-const announcedStage = new RegExp(finalRules.accept);
 
 function cleanTitle(title) {
   return title.replace(/&(?:nbsp|#160|#x[aA]0);/gi, " ").replace(/\s+/g, " ").trim();
 }
-
-function isFinalResult({baslik, tarih, kaynak, telegram, manuel}) {
-  if (!baslik || !tarih || tarih < campaignStart) return false;
-  const title = fold(cleanTitle(baslik));
-  if (earlierStage.test(title)) return false;
-  if (manuel === true || announcedStage.test(title)) return true;
-  if (!kaynak || !telegram?.endsWith("/" + finalRules.contextPost)) return false;
-  const url = new URL(kaynak);
-  return finalRules.contextLinks.includes(url.hostname + url.pathname);
-}
-
 
 function provinceFor(authority, domain) {
   const hostKey = domain.split(".")[0].toLowerCase();
   if (courtAliases.has(hostKey)) return courtAliases.get(hostKey);
   const region = slug(authority.replace(/\s+(?:BAM|BİM|BIM|Adliyesi|Adalet Komisyonu)$/iu, ""));
   if (provinces.has(region)) return provinces.get(region);
+  const hostProvince = provinces.get(hostKey.replace(/(?:bam|bim)$/, ""));
+  if (hostProvince) return hostProvince;
   const matches = districtProvinces.get(region) ?? districtProvinces.get(hostKey);
   return matches?.size === 1 ? [...matches][0] : null;
 }
@@ -72,7 +59,7 @@ const positions = [
 function sourceLink(value) {
   try {
     const url = new URL(value);
-    if (!["http:", "https:"].includes(url.protocol) || !url.hostname.endsWith(".adalet.gov.tr")
+    if (!["http:", "https:"].includes(url.protocol) || !/(?:^|\.)adalet\.gov\.tr$/.test(url.hostname)
         || url.username || url.password || url.port || url.pathname === "/") return null;
     return url.origin + url.pathname;
   } catch {
@@ -80,23 +67,30 @@ function sourceLink(value) {
   }
 }
 
-function parseBlock(lines, source, post, unmatched) {
-  const heading = /^⚖\uFE0F?\s*(.+?)\s*\(([a-z0-9.-]+)\)$/.exec(lines[0]);
-  if (!heading || new URL(source).hostname !== heading[2]) return [];
-  const adliye = heading[1];
-  const il = provinceFor(adliye, heading[2]);
+function parseHeading(line) {
+  const heading = /^(.+?)\s+\(([a-z0-9.-]+)\)$/iu.exec(line);
+  if (!heading || !/(?:^|\.)adalet\.gov\.tr$/i.test(heading[2])) return null;
+  return {
+    adliye: heading[1].replace(/^[^\p{L}\p{N}]+/u, ""),
+    domain: heading[2].toLowerCase(),
+  };
+}
+
+function parseBlock(lines, source, post, postDate, unmatched, fallbackTitle) {
+  const domain = new URL(source).hostname;
+  const heading = lines.length ? parseHeading(lines[0]) : null;
+  const adliye = heading?.adliye || domain;
+  const il = provinceFor(adliye, domain);
+  if (!il) unmatched?.add(adliye + " (" + domain + ")");
   const dateLine = lines.findIndex(line => line.startsWith("📅"));
-  if (dateLine < 2) return [];
-  const date = /\b(\d{2})\.(\d{2})\.(\d{4})\b/.exec(lines[dateLine]);
-  if (!date) return [];
-  const tarih = [date[3], date[2], date[1]].join("-");
-  const timestamp = Date.parse(tarih);
-  if (tarih < campaignStart || !Number.isFinite(timestamp) || new Date(timestamp).toISOString().slice(0, 10) !== tarih) return [];
-  const baslik = cleanTitle(lines.slice(1, dateLine).join(" "));
+  const date = dateLine > 0 ? /\b(\d{2})\.(\d{2})\.(\d{4})\b/.exec(lines[dateLine]) : null;
+  const isoDate = date ? [date[3], date[2], date[1]].join("-") : "";
+  const timestamp = Date.parse(isoDate);
+  const tarih = Number.isFinite(timestamp) && new Date(timestamp).toISOString().slice(0, 10) === isoDate ? isoDate : postDate;
+  const baslik = cleanTitle(lines.slice(1, dateLine < 0 ? undefined : dateLine).join(" ")) ||
+    fallbackTitle || "Adliye duyurusu";
   const telegram = "https://t.me/" + channel + "/" + post;
   const title = fold(baslik);
-  if (!isFinalResult({baslik, tarih, kaynak: source, telegram})) return [];
-  const durum = "aciklandi";
   const quotas = new Map();
   for (const line of lines.slice(dateLine + 1)) {
     const entry = /^(.*?)\s*:\s*(\d+)\s+kisi\b/.exec(fold(line));
@@ -107,35 +101,37 @@ function parseBlock(lines, source, post, unmatched) {
     const number = Number(entry[2]);
     quotas.set(job, quotas.has(job) && quotas.get(job) !== number ? null : number);
   }
-  const jobs = positions.filter(([pattern]) => pattern.test(title)).map(([, job]) => job);
-  const isHiring = /\b(?:personel\s+alim\w*|sozlesmeli\s+personel|kadrolar\w*)\b/.test(title);
-  if (!jobs.length && !isHiring) return [];
-  if (!il) {
-    unmatched?.add(adliye + " (" + heading[2] + ")");
-    return [];
-  }
-  return (jobs.length ? jobs : ["Kadro belirtilmedi"]).map(kadro => ({
-    il, adliye, kadro, kontenjan: quotas.get(kadro) ?? null, alinan: null, tarih, durum, baslik,
+  const jobs = new Set(positions.filter(([pattern]) => pattern.test(title)).map(([, job]) => job));
+  for (const job of quotas.keys()) jobs.add(job);
+  return (jobs.size ? [...jobs] : ["Kadro belirtilmedi"]).map(kadro => ({
+    il, adliye, kadro, kontenjan: quotas.get(kadro) ?? null, tarih, durum: "aciklandi", baslik,
     kaynak: source, telegram,
   }));
 }
 
-function parseMessage(body, links, post, unmatched) {
-  let lines = [];
+function parseMessage(body, links, post, unmatched, postDate = null) {
+  const lines = body.split("\n").map(cleanTitle).filter(Boolean);
+  const fallbackTitle = lines.find(line => /^\p{L}/u.test(line) && !parseHeading(line));
   const records = [];
-  for (const raw of body.split("\n")) {
-    const line = raw.replace(/\s+/g, " ").trim();
-    if (line.startsWith("⚖")) {
-      lines = [line];
-    } else if (lines.length && line) {
-      const marker = /\[\[link:(\d+)\]\]/.exec(line);
-      if (marker) {
-        records.push(...parseBlock(lines, links[Number(marker[1])], post, unmatched));
-        lines = [];
-      } else {
-        lines.push(line);
-      }
+  let block = [];
+  for (const line of lines) {
+    const heading = parseHeading(line);
+    if (heading) {
+      block = [line];
+      continue;
     }
+    const markers = [...line.matchAll(/\[\[link:(\d+)\]\]/g)];
+    if (!markers.length) {
+      if (block.length) block.push(line);
+      continue;
+    }
+    for (const [, index] of markers) {
+      const source = links[Number(index)];
+      if (!source) continue;
+      const matches = block.length && parseHeading(block[0]).domain === new URL(source).hostname;
+      records.push(...parseBlock(matches ? block : [], source, post, postDate, unmatched, fallbackTitle));
+    }
+    block = [];
   }
   return records;
 }
@@ -150,26 +146,4 @@ function idFor(row) {
   return url.hostname + url.pathname.replace(/\/$/, "") + "|" + row.kadro;
 }
 
-function canonicalRecords(input) {
-  const rows = Array.from(input).filter(isFinalResult).map(row => ({...row, baslik: cleanTitle(row.baslik), durum: "aciklandi"}));
-  const identified = new Set(rows.filter(row => row.kadro !== "Kadro belirtilmedi")
-    .filter(row => row.kaynak).map(row => new URL(row.kaynak).hostname + new URL(row.kaynak).pathname));
-  const groups = new Map();
-  const visible = [];
-  for (const row of rows) {
-    const key = row.kaynak && (new URL(row.kaynak).hostname + new URL(row.kaynak).pathname);
-    if (row.kadro === "Kadro belirtilmedi" && identified.has(key)) continue;
-    const group = [row.il, slug(row.adliye), row.kadro, row.tarih].join("|");
-    if (!groups.has(group)) groups.set(group, []);
-    groups.get(group).push(row);
-  }
-  for (const group of groups.values()) {
-    // Some announcements link to both the detailed notice and its separate list.
-    const isAttachment = row => /^(?:katip|koruma)\s+nihai\s+basari\s+listesi\b/.test(fold(row.baslik || ""));
-    const notices = group.filter(row => !isAttachment(row) && Number.isFinite(row.kontenjan));
-    visible.push(...group.filter(row => notices.length !== 1 || !isAttachment(row) || row.kontenjan != null));
-  }
-  return visible;
-}
-
-export {canonicalRecords, cleanTitle, fold, idFor, isFinalResult, parseMessage, positions, postId, provinces, slug, sourceLink};
+export {cleanTitle, fold, idFor, parseMessage, positions, postId, provinces, slug, sourceLink};

@@ -1,6 +1,6 @@
 import {appendFile, readFile, rename, rm, writeFile} from "node:fs/promises";
 import {load} from "cheerio";
-import {canonicalRecords, idFor, parseMessage, postId, slug, sourceLink} from "./parse.mjs";
+import {idFor, parseMessage, postId, slug, sourceLink} from "./parse.mjs";
 
 const channel = "adaletbakanligilanlari";
 const preview = "https://t.me/s/" + channel;
@@ -24,7 +24,8 @@ export function parsePreview(html) {
       const link = sourceLink($(anchor).attr("href"));
       if (link) $(anchor).replaceWith("[[link:" + (links.push(link) - 1) + "]]");
     }
-    rows.push(...parseMessage(body.text(), links, id, unmatched));
+    const stamp = $(card).find("time[datetime]").attr("datetime")?.slice(0, 10);
+    rows.push(...parseMessage(body.text(), links, id, unmatched, stamp ?? null));
   }
   if (!postIds.length) throw new Error("Telegram önizlemesinde gönderi bulunamadı.");
   const older = Number($(".tme_messages_more[data-before]").attr("data-before")) || null;
@@ -94,7 +95,7 @@ export function mergeRecords(current, incoming) {
     if (matchedKey !== idFor(updated)) rows.delete(matchedKey);
     rows.set(idFor(updated), updated);
   }
-  return canonicalRecords(rows.values());
+  return [...rows.values()];
 }
 
 export async function writeAtomic(path, content) {
@@ -121,12 +122,12 @@ async function main() {
   }
   if (newest > checkpoint) await writeAtomic(cursorPath, newest + "\n");
   console.log("Telegram son gönderi: " + newest + " | Haritadaki toplam kayıt: " + updated.length);
-  if (unmatched.size) console.warn("İli doğrulanamayan komisyonlar:", ...unmatched);
+  if (unmatched.size) console.warn("İl belirtilmeden gösterilen kurumlar:", ...unmatched);
   if (process.env.GITHUB_STEP_SUMMARY) {
     await appendFile(process.env.GITHUB_STEP_SUMMARY, [
       "## Telegram kontrolü tamamlandı",
       "",
-      changed ? "Yeni veya güncellenen sonuçlar bulundu." : "Haritada değişiklik yok.",
+      changed ? "Yeni veya güncellenen duyurular bulundu." : "Haritada değişiklik yok.",
       "",
       "- Telegram'daki son gönderi: #" + newest,
       "- Haritadaki toplam kayıt: " + updated.length,

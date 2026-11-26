@@ -24,12 +24,14 @@ test("manual final results are retained during Telegram refresh and can receive 
   assert.deepEqual(mergeRecords(merged, [automatic]), merged);
 });
 
-test("manual submissions validate the province, date, quota, source and result stage", () => {
+test("manual submissions validate metadata and accept every announcement stage", () => {
   for (const fields of [
     {il: "Unknown"}, {tarih: "2026-11-31"}, {kontenjan: "-1"},
-    {kaynak: "https://example.com/sonuc"}, {baslik: "Zabıt Kâtibi Uygulama Sınav Sonuçları"},
+    {kaynak: "https://example.com/sonuc"},
   ]) {
     assert.throws(() => manualRecord({...input, ...fields}));
   }
   assert.equal(manualRecord({...input, kontenjan: ""}).kontenjan, null);
+  const baslik = "Zabıt Kâtibi Uygulama Sınav Sonuçları";
+  assert.equal(manualRecord({...input, baslik}).baslik, baslik);
 });

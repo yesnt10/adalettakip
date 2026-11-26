@@ -1,8 +1,8 @@
 # Adalet Alım Haritası
 
-Türkiye'nin 81 ilinde adliye nihai sonuçlarını ve duyurularda belirtilen kontenjanları gösterir. Harita GitHub Pages üzerinden sunulur.
+Türkiye'nin 81 ilinde adliye duyurularını ve duyurularda belirtilen kontenjanları gösterir. Harita GitHub Pages üzerinden sunulur.
 
-GitHub Actions herkese açık [Telegram kanalını](https://t.me/s/adaletbakanligilanlari) beş dakikada bir kontrol eder. Duyuru başlıklarından yalnızca sonuç turuna ait nihai sonuçlar ve sözlü sınav sonuçları alınır. Sınava çağrılar ve uygulama sınavı sonuçları dışarıda kalır. Resmî ilan bağlantısı kullanıcıya gösterilir. Otomatik kontrol adliye sayfalarına bağlanmaz.
+GitHub Actions herkese açık [Telegram kanalını](https://t.me/s/adaletbakanligilanlari) beş dakikada bir kontrol eder. Kanalda paylaşılan resmî adliye duyuruları aşamaya ve kadroya göre elenmeden aktarılır. İl eşleşmesi bulunamayan kurum duyuruları haritanın altındaki bölümde listelenir. Resmî ilan bağlantısı kullanıcıya gösterilir. Otomatik kontrol adliye sayfalarına bağlanmaz.
 
 Yeni geçerli kayıtlar `dist/kayitlar.json` dosyasına eklenir. Harita içeriği değiştiğinde otomatik yayınlanır. Zamanlama yoğunlukta gecikebilir. GitHub, 60 gün etkinlik görmeyen açık depolarda zamanlamayı durdurabilir. Gerektiğinde Actions sekmesinde **Telegram ve harita** akışını yeniden etkinleştirin.
 

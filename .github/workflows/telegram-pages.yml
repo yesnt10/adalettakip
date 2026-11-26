@@ -76,9 +76,9 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          if [ "${GITHUB_WORKFLOW}" = "Manuel nihai sonuç ekle" ]; then
-            git commit -m 'Manuel nihai sonucu kaydet'
+          if [ "${GITHUB_WORKFLOW}" = "Manuel duyuru ekle" ]; then
+            git commit -m 'Manuel duyuruyu kaydet'
           else
-            git commit -m 'Telegram sonuçlarını güncelle'
+            git commit -m 'Telegram duyurularını güncelle'
           fi
           git push origin HEAD:main
