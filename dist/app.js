@@ -32,10 +32,14 @@ function jobPriority(job) {
 }
 
 function isProvinceCenter(record) {
-  const place = fold(record.adliye).trim()
-    .replace(/\s+(?:adliyesi|bam|bim)$/, "")
+  const host = URL.canParse(record.kaynak) ? new URL(record.kaynak).hostname : "";
+  if (/(?:bam|bim)\.adalet\.gov\.tr$/.test(host)) return false;
+
+  const province = fold(record.il).trim();
+  const place = fold(record.adliye).trim().replace(/\s+/g, " ")
+    .replace(/\s+(?:adliyesi|adalet komisyonu)$/, "")
     .replace(/\s+merkez$/, "");
-  return place === fold(record.il).trim();
+  return place === province || place === province.replace(/[^a-z0-9]/g, "") + ".adalet.gov.tr";
 }
 
 function provinceColor(records) {
