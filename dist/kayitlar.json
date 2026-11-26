@@ -3441,5 +3441,170 @@
     "baslik": "Sözleşmeli Şoför ve Aşçı Sınavları Başvuru Sonuçları",
     "kaynak": "http://adanabim.adalet.gov.tr/sozlesmeli-sofor-ve-asci-sinavlari-basvuru-sonuclari_149993",
     "telegram": "https://t.me/adaletbakanligilanlari/3879"
+  },
+  {
+    "il": "Kastamonu",
+    "adliye": "İnebolu",
+    "kadro": "Aşçı",
+    "kontenjan": null,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "AŞÇI SÖZLÜ SINAV SONUÇ LİSTESİ",
+    "kaynak": "http://inebolu.adalet.gov.tr/asci-sozlu-sinav-sonuc-listesi",
+    "telegram": "https://t.me/adaletbakanligilanlari/3880"
+  },
+  {
+    "il": "Kastamonu",
+    "adliye": "İnebolu",
+    "kadro": "Mübaşir",
+    "kontenjan": 1,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "MÜBAŞİR SÖZLÜ SINAV SONUÇ LİSTESİ",
+    "kaynak": "http://inebolu.adalet.gov.tr/mubasir-sozlu-sinav-sonuc-listesi",
+    "telegram": "https://t.me/adaletbakanligilanlari/3880"
+  },
+  {
+    "il": "Kastamonu",
+    "adliye": "İnebolu",
+    "kadro": "Zabıt kâtibi",
+    "kontenjan": 5,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "ZABIT KATİPLİĞİ SÖZLÜ SINAV SONUÇ LİSTESİ",
+    "kaynak": "http://inebolu.adalet.gov.tr/zabit-katipligi-sozlu-sinav-sonuc-listesi",
+    "telegram": "https://t.me/adaletbakanligilanlari/3880"
+  },
+  {
+    "il": "Ordu",
+    "adliye": "Ordu",
+    "kadro": "Zabıt kâtibi",
+    "kontenjan": 7,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "2026 Yılı Sözleşmeli Zabıt Katibi Sonuç Ekranı",
+    "kaynak": "http://ordu.adalet.gov.tr/2026-yili-sozlesmeli-zabit-katibi-sonuc-ekrani",
+    "telegram": "https://t.me/adaletbakanligilanlari/3881"
+  },
+  {
+    "il": "Ordu",
+    "adliye": "Ordu",
+    "kadro": "Hizmetli",
+    "kontenjan": 1,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "2026 Yılı Sözleşmeli Destek Personeli (Hizmetli)Sonuç Ekranı",
+    "kaynak": "http://ordu.adalet.gov.tr/2026-yili-sozlesmeli-destek-personeli-hizmetli-sonuc-ekrani",
+    "telegram": "https://t.me/adaletbakanligilanlari/3882"
+  },
+  {
+    "il": "Ordu",
+    "adliye": "Ordu",
+    "kadro": "Zabıt kâtibi",
+    "kontenjan": 7,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "2026 Yılı Sözleşmeli Zabıt Katibi,Sözleşmeli Destek Personeli(Hizmetli) Nihai Başarı İlanı",
+    "kaynak": "http://ordu.adalet.gov.tr/2026-yili-sozlesmeli-zabit-katibi-sozlesmeli-destek-personeli-hizmetli-nihai-basari-ilani",
+    "telegram": "https://t.me/adaletbakanligilanlari/3883"
+  },
+  {
+    "il": "Ordu",
+    "adliye": "Ordu",
+    "kadro": "Hizmetli",
+    "kontenjan": 1,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "2026 Yılı Sözleşmeli Zabıt Katibi,Sözleşmeli Destek Personeli(Hizmetli) Nihai Başarı İlanı",
+    "kaynak": "http://ordu.adalet.gov.tr/2026-yili-sozlesmeli-zabit-katibi-sozlesmeli-destek-personeli-hizmetli-nihai-basari-ilani",
+    "telegram": "https://t.me/adaletbakanligilanlari/3883"
+  },
+  {
+    "il": "Kırıkkale",
+    "adliye": "Kırıkkale",
+    "kadro": "Zabıt kâtibi",
+    "kontenjan": 4,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "Zabıt Katibi",
+    "kaynak": "http://kirikkale.adalet.gov.tr/zabit-katibi_150093",
+    "telegram": "https://t.me/adaletbakanligilanlari/3884"
+  },
+  {
+    "il": "Kırıkkale",
+    "adliye": "Kırıkkale",
+    "kadro": "Mübaşir",
+    "kontenjan": 1,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "mübaşir",
+    "kaynak": "http://kirikkale.adalet.gov.tr/mubasir",
+    "telegram": "https://t.me/adaletbakanligilanlari/3885"
+  },
+  {
+    "il": "Kırıkkale",
+    "adliye": "Kırıkkale",
+    "kadro": "Hizmetli",
+    "kontenjan": 2,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "hizmetli",
+    "kaynak": "http://kirikkale.adalet.gov.tr/hizmetli",
+    "telegram": "https://t.me/adaletbakanligilanlari/3886"
+  },
+  {
+    "il": "Zonguldak",
+    "adliye": "Zonguldak",
+    "kadro": "Mübaşir",
+    "kontenjan": 1,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "Sözleşmeli Mübaşir Sözlü Sınav Sonuç İlanı",
+    "kaynak": "http://zonguldak.adalet.gov.tr/sozlesmeli-mubasir-sozlu-sinav-sonuc-ilani",
+    "telegram": "https://t.me/adaletbakanligilanlari/3887"
+  },
+  {
+    "il": "Zonguldak",
+    "adliye": "Zonguldak",
+    "kadro": "Zabıt kâtibi",
+    "kontenjan": 6,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "Sözleşmeli Zabıt Katibi Sözlü Sınav Sonuç İlanı",
+    "kaynak": "http://zonguldak.adalet.gov.tr/sozlesmeli-zabit-katibi-sozlu-sinav-sonuc-ilani",
+    "telegram": "https://t.me/adaletbakanligilanlari/3887"
+  },
+  {
+    "il": "Kırıkkale",
+    "adliye": "Kırıkkale",
+    "kadro": "Zabıt kâtibi",
+    "kontenjan": 4,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "Sözleşmeli Zabıt Katibi ,Mübaşir ,Hizmetli Sınav Sonuçlarına İlişkin Duyuru",
+    "kaynak": "http://kirikkale.adalet.gov.tr/sozlesmeli-zabit-katibi-mubasir-hizmetli-sinav-sonuclarina-iliskin-duyuru",
+    "telegram": "https://t.me/adaletbakanligilanlari/3888"
+  },
+  {
+    "il": "Kırıkkale",
+    "adliye": "Kırıkkale",
+    "kadro": "Mübaşir",
+    "kontenjan": 1,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "Sözleşmeli Zabıt Katibi ,Mübaşir ,Hizmetli Sınav Sonuçlarına İlişkin Duyuru",
+    "kaynak": "http://kirikkale.adalet.gov.tr/sozlesmeli-zabit-katibi-mubasir-hizmetli-sinav-sonuclarina-iliskin-duyuru",
+    "telegram": "https://t.me/adaletbakanligilanlari/3888"
+  },
+  {
+    "il": "Kırıkkale",
+    "adliye": "Kırıkkale",
+    "kadro": "Hizmetli",
+    "kontenjan": 2,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "Sözleşmeli Zabıt Katibi ,Mübaşir ,Hizmetli Sınav Sonuçlarına İlişkin Duyuru",
+    "kaynak": "http://kirikkale.adalet.gov.tr/sozlesmeli-zabit-katibi-mubasir-hizmetli-sinav-sonuclarina-iliskin-duyuru",
+    "telegram": "https://t.me/adaletbakanligilanlari/3888"
   }
 ]
