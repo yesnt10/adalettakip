@@ -37,11 +37,11 @@ function cleanTitle(title) {
   return title.replace(/&(?:nbsp|#160|#x[aA]0);/gi, " ").replace(/\s+/g, " ").trim();
 }
 
-function isFinalResult({baslik, tarih, kaynak, telegram}) {
+function isFinalResult({baslik, tarih, kaynak, telegram, manuel}) {
   if (!baslik || !tarih || tarih < campaignStart) return false;
   const title = fold(cleanTitle(baslik));
   if (earlierStage.test(title)) return false;
-  if (announcedStage.test(title)) return true;
+  if (manuel === true || announcedStage.test(title)) return true;
   if (!kaynak || !telegram?.endsWith("/" + finalRules.contextPost)) return false;
   const url = new URL(kaynak);
   return finalRules.contextLinks.includes(url.hostname + url.pathname);
@@ -172,4 +172,4 @@ function canonicalRecords(input) {
   return visible;
 }
 
-export {canonicalRecords, idFor, isFinalResult, parseMessage, postId, sourceLink};
+export {canonicalRecords, cleanTitle, fold, idFor, isFinalResult, parseMessage, positions, postId, provinces, slug, sourceLink};

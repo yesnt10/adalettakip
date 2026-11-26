@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Yönetim · Adalet Alım Haritası</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="admin.css">
+<script src="admin.js" defer></script>
+</head>
+<body>
+<main class="admin">
+  <header class="admin-header">
+    <div>
+      <a class="back" href="../">← Haritaya dön</a>
+      <h1>Yönetim</h1>
+    </div>
+    <div class="actions">
+      <a class="action primary" href="https://github.com/yesnt10/adalettakip/actions/workflows/manual-entry.yml">Manuel kayıt ekle</a>
+      <a class="action" href="https://github.com/yesnt10/adalettakip/actions/workflows/telegram-pages.yml">Telegram kontrolü</a>
+    </div>
+  </header>
+  <p class="hint">Kayıt eklemek için GitHub’da <strong>Run workflow</strong> düğmesine bas. Form, depoya yazma yetkisi olan hesaplara açık.</p>
+  <section class="card" aria-labelledby="latest">
+    <h2 id="latest">Son aktarılan Telegram duyurusu</h2>
+    <p id="telegram-meta" class="hint" role="status">Yükleniyor…</p>
+    <ul id="telegram-records" class="record-list"></ul>
+  </section>
+  <section class="card" aria-labelledby="checks">
+    <div class="card-heading">
+      <h2 id="checks">Telegram kontrol durumu</h2>
+      <button class="action" type="button" id="refresh">Durumu yenile</button>
+    </div>
+    <dl class="check-list" aria-live="polite">
+      <div><dt>Son otomatik kontrol</dt><dd id="schedule">Yükleniyor…</dd></div>
+      <div><dt>Son elle başlatılan kontrol</dt><dd id="workflow_dispatch">Yükleniyor…</dd></div>
+    </dl>
+  </section>
+</main>
+</body>
+</html>

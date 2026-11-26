@@ -1,0 +1,41 @@
+name: Manuel nihai sonuç ekle
+
+on:
+  workflow_dispatch:
+    inputs:
+      il:
+        description: 'İl (ör. Zonguldak)'
+        required: true
+        type: string
+      adliye:
+        description: 'Adliye veya komisyon (ör. Karadeniz Ereğli)'
+        required: true
+        type: string
+      kadro:
+        description: 'Kadro (ör. Zabıt kâtibi)'
+        required: true
+        type: string
+      tarih:
+        description: 'İlan tarihi (YYYY-AA-GG)'
+        required: true
+        type: string
+      kontenjan:
+        description: 'Kontenjan (bilinmiyorsa boş bırak)'
+        type: string
+      baslik:
+        description: 'İlanın başlığı (isteğe bağlı)'
+        type: string
+      kaynak:
+        description: 'Resmî ilan bağlantısı (isteğe bağlı)'
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  publish:
+    uses: ./.github/workflows/telegram-pages.yml
+    with:
+      manual_payload: ${{ toJSON(inputs) }}

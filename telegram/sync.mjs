@@ -1,6 +1,6 @@
 import {readFile, rename, rm, writeFile} from "node:fs/promises";
 import {load} from "cheerio";
-import {canonicalRecords, idFor, parseMessage, postId, sourceLink} from "./parse.mjs";
+import {canonicalRecords, idFor, parseMessage, postId, slug, sourceLink} from "./parse.mjs";
 
 const channel = "adaletbakanligilanlari";
 const preview = "https://t.me/s/" + channel;
@@ -61,20 +61,43 @@ export async function collectUpdates(checkpoint, readPreview = downloadPreview) 
   throw new Error("Telegram geçmişi tamamlanamadı. Son kayıt noktası korunuyor.");
 }
 
+function samePlaceAndJob(a, b) {
+  return a.il === b.il && slug(a.adliye) === slug(b.adliye) && slug(a.kadro) === slug(b.kadro) && a.tarih === b.tarih;
+}
+
 export function mergeRecords(current, incoming) {
   if (!incoming.length) return current;
   const rows = new Map(current.map(row => [idFor(row), row]));
   for (const row of incoming.toSorted((a, b) => postId(a) - postId(b))) {
     const key = idFor(row);
-    const prior = rows.get(key);
-    if (prior && postId(prior) > postId(row)) continue;
+    let matchedKey = key;
+    if (!rows.has(key)) {
+      const matches = [...rows].filter(([, candidate]) =>
+        (candidate.manuel || row.manuel) && (!candidate.kaynak || !row.kaynak) && samePlaceAndJob(candidate, row));
+      if (matches.length === 1) matchedKey = matches[0][0];
+    }
+    const prior = rows.get(matchedKey);
+    if (prior && !row.manuel && postId(prior) > postId(row)) continue;
     const {alinan: ignored, ...published} = row;
-    rows.set(key, {...prior, ...published, kontenjan: published.kontenjan ?? prior?.kontenjan ?? null});
+    const updated = {
+      ...prior, ...published,
+      kontenjan: published.kontenjan ?? prior?.kontenjan ?? null,
+      kaynak: published.kaynak ?? prior?.kaynak ?? null,
+    };
+    if (prior?.manuel && !row.manuel) {
+      Object.assign(updated, prior, {kaynak: updated.kaynak, kontenjan: prior.kontenjan ?? updated.kontenjan});
+      updated.telegram = row.telegram;
+    }
+    if (row.manuel && prior && Object.keys(updated).every(field => field === "manuel" || updated[field] === prior[field])) {
+      continue;
+    }
+    if (matchedKey !== idFor(updated)) rows.delete(matchedKey);
+    rows.set(idFor(updated), updated);
   }
   return canonicalRecords(rows.values());
 }
 
-async function writeAtomic(path, content) {
+export async function writeAtomic(path, content) {
   const pending = new URL(path.href + "." + process.pid + ".tmp");
   try {
     await writeFile(pending, content, "utf8");

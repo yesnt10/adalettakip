@@ -6,10 +6,15 @@ on:
   schedule:
     - cron: '2-57/5 * * * *'
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      manual_payload:
+        type: string
+        default: ''
 
 concurrency:
   group: telegram-pages
-  cancel-in-progress: false
+  queue: max
 
 permissions:
   contents: write
@@ -34,14 +39,20 @@ jobs:
       - run: npm ci
       - run: npm test
       - name: Telegram'ı kontrol et
-        if: github.event_name != 'push'
+        if: ${{ !inputs.manual_payload && github.event_name != 'push' }}
         run: npm run sync
+      - name: Manuel sonucu doğrula ve kaydet
+        if: inputs.manual_payload
+        env:
+          MANUAL_PAYLOAD: ${{ inputs.manual_payload }}
+        run: node telegram/manual-entry.mjs
       - name: Harita verisi değişti mi?
         id: publish
         env:
           EVENT_NAME: ${{ github.event_name }}
+          MANUAL_ENTRY: ${{ inputs.manual_payload != '' }}
         run: |
-          if [ "$EVENT_NAME" = push ] || [ "$EVENT_NAME" = workflow_dispatch ] || ! git diff --quiet -- dist/kayitlar.json; then
+          if [ "$EVENT_NAME" = push ] || { [ "$EVENT_NAME" = workflow_dispatch ] && [ "$MANUAL_ENTRY" != true ]; } || ! git diff --quiet -- dist/kayitlar.json; then
             echo 'deploy=true' >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/configure-pages@v6.0.0
@@ -61,5 +72,9 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'Telegram sonuçlarını güncelle'
+          if [ "${GITHUB_WORKFLOW}" = "Manuel nihai sonuç ekle" ]; then
+            git commit -m 'Manuel nihai sonucu kaydet'
+          else
+            git commit -m 'Telegram sonuçlarını güncelle'
+          fi
           git push origin HEAD:main
