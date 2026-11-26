@@ -29,6 +29,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Elle çalıştırma yetkisini doğrula
+        if: ${{ github.event_name == 'workflow_dispatch' && (github.actor_id != '114935167' || github.triggering_actor != github.repository_owner) }}
+        run: |
+          echo 'Bu işlem yalnızca haritanın sahibi tarafından çalıştırılabilir.'
+          exit 1
       - uses: actions/checkout@v7.0.1
         with:
           ref: main
