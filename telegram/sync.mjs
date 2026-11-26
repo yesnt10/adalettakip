@@ -1,4 +1,4 @@
-import {readFile, rename, rm, writeFile} from "node:fs/promises";
+import {appendFile, readFile, rename, rm, writeFile} from "node:fs/promises";
 import {load} from "cheerio";
 import {canonicalRecords, idFor, parseMessage, postId, slug, sourceLink} from "./parse.mjs";
 
@@ -115,12 +115,24 @@ async function main() {
   const current = JSON.parse(await readFile(dataPath, "utf8"));
   const {incoming, newest, unmatched} = await collectUpdates(checkpoint);
   const updated = mergeRecords(current, incoming);
-  if (JSON.stringify(updated) !== JSON.stringify(current)) {
+  const changed = JSON.stringify(updated) !== JSON.stringify(current);
+  if (changed) {
     await writeAtomic(dataPath, JSON.stringify(updated, null, 2) + "\n");
   }
   if (newest > checkpoint) await writeAtomic(cursorPath, newest + "\n");
   console.log("Telegram son gönderi: " + newest + " | Haritadaki toplam kayıt: " + updated.length);
   if (unmatched.size) console.warn("İli doğrulanamayan komisyonlar:", ...unmatched);
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    await appendFile(process.env.GITHUB_STEP_SUMMARY, [
+      "## Telegram kontrolü tamamlandı",
+      "",
+      changed ? "Yeni veya güncellenen sonuçlar bulundu." : "Haritada değişiklik yok.",
+      "",
+      "- Telegram'daki son gönderi: #" + newest,
+      "- Haritadaki toplam kayıt: " + updated.length,
+      "",
+    ].join("\n"));
+  }
 }
 
 if (import.meta.main) await main();

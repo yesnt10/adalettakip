@@ -55,9 +55,8 @@ jobs:
         id: publish
         env:
           EVENT_NAME: ${{ github.event_name }}
-          MANUAL_ENTRY: ${{ inputs.manual_payload != '' }}
         run: |
-          if [ "$EVENT_NAME" = push ] || { [ "$EVENT_NAME" = workflow_dispatch ] && [ "$MANUAL_ENTRY" != true ]; } || ! git diff --quiet -- dist/kayitlar.json; then
+          if [ "$EVENT_NAME" = push ] || ! git diff --quiet -- dist/kayitlar.json; then
             echo 'deploy=true' >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/configure-pages@v6.0.0
