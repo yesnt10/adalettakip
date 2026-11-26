@@ -17,6 +17,7 @@ concurrency:
   queue: max
 
 permissions:
+  actions: read
   contents: write
   pages: write
   id-token: write
@@ -65,9 +66,27 @@ jobs:
         if: steps.publish.outputs.deploy == 'true'
         with:
           path: dist
+          name: github-pages-${{ github.run_attempt }}
+      - name: Yayın dosyasının GitHub'da görünmesini bekle
+        if: steps.publish.outputs.deploy == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_NAME: github-pages-${{ github.run_attempt }}
+        run: |
+          for attempt in {1..12}; do
+            if gh api --method GET "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
+              -f name="$ARTIFACT_NAME" --jq '.total_count' | grep -qx '1'; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo 'Yayın dosyası henüz GitHub tarafından listelenmedi.' >&2
+          exit 1
       - uses: actions/deploy-pages@v5.0.1
         id: deployment
         if: steps.publish.outputs.deploy == 'true'
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
       - name: Sonuçları ve kontrol noktasını kaydet
         run: |
           git add -- dist/kayitlar.json telegram/cursor.txt
