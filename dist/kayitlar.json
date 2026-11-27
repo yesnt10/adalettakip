@@ -3606,5 +3606,104 @@
     "baslik": "Sözleşmeli Zabıt Katibi ,Mübaşir ,Hizmetli Sınav Sonuçlarına İlişkin Duyuru",
     "kaynak": "http://kirikkale.adalet.gov.tr/sozlesmeli-zabit-katibi-mubasir-hizmetli-sinav-sonuclarina-iliskin-duyuru",
     "telegram": "https://t.me/adaletbakanligilanlari/3888"
+  },
+  {
+    "il": "Tokat",
+    "adliye": "Zile",
+    "kadro": "Zabıt kâtibi",
+    "kontenjan": 2,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "SÖZLEŞMELİ ZABIT KATİBİ VE HİZMETLİ ALIMI SÖZLÜ SINAV SONUÇLARINA İLİŞKİN DUYURU",
+    "kaynak": "http://zile.adalet.gov.tr/sozlesmeli-zabit-katibi-ve-hizmetli-alimi-sozlu-sinav-sonuclarina-iliskin-duyuru",
+    "telegram": "https://t.me/adaletbakanligilanlari/3889"
+  },
+  {
+    "il": "Tokat",
+    "adliye": "Zile",
+    "kadro": "Hizmetli",
+    "kontenjan": 1,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "SÖZLEŞMELİ ZABIT KATİBİ VE HİZMETLİ ALIMI SÖZLÜ SINAV SONUÇLARINA İLİŞKİN DUYURU",
+    "kaynak": "http://zile.adalet.gov.tr/sozlesmeli-zabit-katibi-ve-hizmetli-alimi-sozlu-sinav-sonuclarina-iliskin-duyuru",
+    "telegram": "https://t.me/adaletbakanligilanlari/3889"
+  },
+  {
+    "il": "Tokat",
+    "adliye": "Zile",
+    "kadro": "Hizmetli",
+    "kontenjan": 1,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "2026 Hizmetli Alımı Sonuçları",
+    "kaynak": "http://zile.adalet.gov.tr/2026-hizmetli-alimi-sonuclari",
+    "telegram": "https://t.me/adaletbakanligilanlari/3891"
+  },
+  {
+    "il": "Tokat",
+    "adliye": "Zile",
+    "kadro": "Kadro belirtilmedi",
+    "kontenjan": null,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "2026 Sözleşmeli Katip Sonuçları",
+    "kaynak": "http://zile.adalet.gov.tr/2026-sozlesmeli-katip-sonuclari",
+    "telegram": "https://t.me/adaletbakanligilanlari/3891"
+  },
+  {
+    "il": null,
+    "adliye": "Personel Genel Müdürlüğü",
+    "kadro": "Kadro belirtilmedi",
+    "kontenjan": null,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "3. Dönem Adli Yargı Hâkim ve Savcı Yardımcılarının Görev Ayrımı Sonuçları",
+    "kaynak": "https://pgm.adalet.gov.tr/Home/SayfaDetay/3-donem-adli-yargi-h-kim-ve-savci-yardimcilarinin-gorev-ayrimi-sonuclari26112026022024",
+    "telegram": "https://t.me/adaletbakanligilanlari/3892"
+  },
+  {
+    "il": "İstanbul",
+    "adliye": "İstanbul Anadolu",
+    "kadro": "Zabıt kâtibi",
+    "kontenjan": 352,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "Sözleşmeli Personel (Zabıt Katibi, Mübaşir, Koruma ve Güvenlik Görevlisi, Teknisyen, Destek Personeli) Alımı Nihai Sonuçları",
+    "kaynak": "http://istanbulanadolu.adalet.gov.tr/sozlesmeli-personel-zabit-katibi-mubasir-koruma-ve-guvenlik-gorevlisi-teknisyen-destek-personel",
+    "telegram": "https://t.me/adaletbakanligilanlari/3892"
+  },
+  {
+    "il": "İstanbul",
+    "adliye": "İstanbul Anadolu",
+    "kadro": "Mübaşir",
+    "kontenjan": 55,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "Sözleşmeli Personel (Zabıt Katibi, Mübaşir, Koruma ve Güvenlik Görevlisi, Teknisyen, Destek Personeli) Alımı Nihai Sonuçları",
+    "kaynak": "http://istanbulanadolu.adalet.gov.tr/sozlesmeli-personel-zabit-katibi-mubasir-koruma-ve-guvenlik-gorevlisi-teknisyen-destek-personel",
+    "telegram": "https://t.me/adaletbakanligilanlari/3892"
+  },
+  {
+    "il": "İstanbul",
+    "adliye": "İstanbul Anadolu",
+    "kadro": "Koruma ve güvenlik",
+    "kontenjan": 45,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "Sözleşmeli Personel (Zabıt Katibi, Mübaşir, Koruma ve Güvenlik Görevlisi, Teknisyen, Destek Personeli) Alımı Nihai Sonuçları",
+    "kaynak": "http://istanbulanadolu.adalet.gov.tr/sozlesmeli-personel-zabit-katibi-mubasir-koruma-ve-guvenlik-gorevlisi-teknisyen-destek-personel",
+    "telegram": "https://t.me/adaletbakanligilanlari/3892"
+  },
+  {
+    "il": "İstanbul",
+    "adliye": "İstanbul Anadolu",
+    "kadro": "Teknisyen",
+    "kontenjan": null,
+    "tarih": "2026-11-26",
+    "durum": "aciklandi",
+    "baslik": "Sözleşmeli Personel (Zabıt Katibi, Mübaşir, Koruma ve Güvenlik Görevlisi, Teknisyen, Destek Personeli) Alımı Nihai Sonuçları",
+    "kaynak": "http://istanbulanadolu.adalet.gov.tr/sozlesmeli-personel-zabit-katibi-mubasir-koruma-ve-guvenlik-gorevlisi-teknisyen-destek-personel",
+    "telegram": "https://t.me/adaletbakanligilanlari/3892"
   }
 ]
